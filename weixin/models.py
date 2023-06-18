@@ -1,4 +1,7 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class JobType(models.Model):
@@ -13,7 +16,7 @@ class JobType(models.Model):
         return self.name
 
 class Mom(models.Model):
-    username = models.ForeignKey('User', related_name = "username", on_delete = models.CASCADE,db_column='username')
+    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     name = models.CharField(max_length = 100)
     email = models.EmailField(unique = True)
     city = models.CharField(max_length = 100)
