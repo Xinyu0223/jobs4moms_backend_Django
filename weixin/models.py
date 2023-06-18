@@ -43,4 +43,13 @@ class Mom(models.Model):
     advice = models.CharField(max_length = 1000)
 
 
+class Employer(models.Model):
+    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    name = models.CharField(max_length = 100)
+    company_name = models.CharField(max_length = 100)
+    email = models.EmailField(unique = True)
+    industry = models.CharField(max_length = 100)
+    telephone = models.CharField(max_length=100, null=True, blank=True)
+    wechat = models.CharField(max_length=100, null=True, blank=True)
+
 

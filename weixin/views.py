@@ -9,7 +9,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 
-from weixin.models import Mom, JobType
+from weixin.models import Employer, Mom, JobType
 
 
 # 获取用户数据
@@ -158,4 +158,56 @@ class WeixinMomRegister(APIView):
 
             
 
+class WeixinEmployerRegister(APIView):
+    def post(self, request, format=None):
 
+        data = json.loads(request.body)
+        code = data.get('code')
+        form = data.get('form')
+
+        # 填写你的测试号密钥
+        appid = 'wxcd99b7e10eaa9e21'
+        appsecret = '0aa6810eff53feee7526d9415ed095c5'
+        # 微信服务接口地址
+        base_url = 'https://api.weixin.qq.com/sns/jscode2session'
+        # 实际请求
+
+        url = base_url + "?appid=" + appid + "&secret=" + appsecret + "&js_code=" + code + "&grant_type=authorization_code"
+        response = requests.get(url)
+        # 处理获取的 openid 
+        try:
+            openid = response.json()['openid']
+            session_key = response.json()['session_key']
+        except KeyError:
+            return Response({'code': 'fail'})
+        else:
+            # 打印到后端命令行
+            print(openid, session_key)
+
+            user = User.objects.create(
+                    username=openid,
+                    password=openid,
+                    email = 'test@gmail.com'
+                )
+            group = Group.objects.get(name='employer')
+            user.groups.add(group)
+
+            employer = Employer.objects.create(
+                username = user,
+                name = form['name'],
+                company_name = form['company_name'],
+                email = form['email'],
+                industry = form['industry'],
+                telephone = form['telephone'],
+                wechat = form['wechat']
+            )
+            
+            employer.save()
+
+
+            return Response({
+                    'code': 'success',
+                    'message': 'employer registered successfully'
+                })
+
+   
