@@ -37,7 +37,7 @@ class Mom(models.Model):
     dim_10 = models.IntegerField()
 
     expect_salary = models.CharField(max_length = 100)
-    advice = models.CharField(max_length = 100)
+    advice = models.CharField(max_length = 1000)
 
 
 
