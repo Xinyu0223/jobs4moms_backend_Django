@@ -12,13 +12,20 @@ class JobPost(APIView):
         """
         
         keyword =  request.GET['search']
+        id = request.GET['id']
 
-        if keyword == 'None':
+        print(keyword)
+        print(id)
+
+        if keyword == '' and id == '':
             job_posts = Job.objects.all().values()
-        else:
+        elif keyword and id == '':
             job_posts = Job.objects.filter(
                 job_title__contains=keyword
             ).values()
+        elif keyword == '' and id:
+            job_posts = Job.objects.filter(job_id=id).values()
+
         
         #data = serialize("json", job_posts, fields=('job_id','job_title', 'jd', 'company_name'))
 
