@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.serializers import serialize
 from job_post.models import Job
+from weixin.models import Employer
+from django.contrib.auth.models import User
 import json
 
 class JobPost(APIView):
@@ -36,9 +38,11 @@ class JobPost(APIView):
 
         data = json.loads(request.body)
         form = data.get('form')
+        user_id = data.get('employer')
 
         job = Job.objects.create(
             company_name = form['company_name'],
+            company_description = form['company_description'],
             website = form['website'],
             industry = form['industry'],
             job_title = form['job_title'],
@@ -53,6 +57,7 @@ class JobPost(APIView):
             advice = form['advice']
         )
 
+        # job.employer_id = Employer.objects.filter(username=user_id)
         job.if_remote = (form['if_remote'], form['if_remote'])
         job.salary_range = (form['salary_range'], form['salary_range'])
         job.if_training = (form['if_training'], form['if_training'])

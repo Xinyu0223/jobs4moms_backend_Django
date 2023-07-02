@@ -67,6 +67,7 @@ class WeixinLogin(APIView):
                     'code': 'failure',
                     'refresh': None,
                     'access': None,
+                    'user_id': None,
                     'user_group': None,
                     'message': 'user not found, please register'
                 })
@@ -81,6 +82,7 @@ class WeixinLogin(APIView):
                     'code': 'success',
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
+                    'user_id': str(openid),
                     'user_group': group_name,
                     'message': 'login successfully'
                 })

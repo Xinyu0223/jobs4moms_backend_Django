@@ -1,10 +1,13 @@
 from django.db import models
+from weixin.models import Employer
 
 
 # Create your models here.
 class Job(models.Model):
     job_id = models.AutoField(primary_key=True)
+    employer_id = models.ForeignKey(Employer, on_delete=models.SET_NULL, null=True)
     company_name = models.CharField(max_length = 100)
+    company_description = models.CharField(max_length = 1000, default='')
     website = models.CharField(max_length = 100)
     industry = models.CharField(max_length = 100)
     job_title = models.CharField(max_length = 100)
@@ -21,4 +24,6 @@ class Job(models.Model):
     start_time = models.CharField(max_length=100)
     if_prioritize = (('是', '是'), ('否', '否'), ('其他', '其他')) # 是否愿意优先提供以上工作给全职妈妈 【是，否，其他】
     advice =  models.CharField(max_length = 1000) # 我们欢迎您的更多宝贵意见，支持妈妈有效重回职场
+    post_time = models.DateTimeField(auto_now_add=True)
+
 
