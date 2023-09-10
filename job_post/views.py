@@ -58,6 +58,7 @@ class JobPost(APIView):
         )
 
         # job.employer_id = Employer.objects.filter(username=user_id)
+        job.job_type = (form['job_type'], form['job_type'])
         job.if_remote = (form['if_remote'], form['if_remote'])
         job.salary_range = (form['salary_range'], form['salary_range'])
         job.if_training = (form['if_training'], form['if_training'])
